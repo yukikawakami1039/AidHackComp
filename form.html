@@ -6,30 +6,21 @@
     <!-- Tailwind CSS（CDNから読み込み） -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      async function sendForm(event) {
+      function goToLoading(event) {
         event.preventDefault();
 
-        const form = event.target;
-        const formData = new FormData(form);
+        // フォーム内の入力値を取得
+        const nameValue = document.getElementById("name").value;
+        const emailValue = document.getElementById("email").value;
+        const messageValue = document.getElementById("message").value;
 
-        // GASのWebアプリURL
-        const url =
-          "https://script.google.com/macros/s/AKfycbxmXh3THIvjgJmX0icw2t9rrH9x-6fRxEbK3uXsul3x4my0jdOOLU_nxSlX-amlS9QoiQ/exec";
+        // Local Storageに保存
+        localStorage.setItem("name", nameValue);
+        localStorage.setItem("email", emailValue);
+        localStorage.setItem("message", messageValue);
 
-        try {
-          const response = await fetch(url, {
-            method: "POST",
-            body: formData,
-          });
-          const result = await response.json();
-          if (result.status === "success") {
-            window.location.href = "thanks.html";
-          } else {
-            alert("送信中にエラーが発生しました: " + result.message);
-          }
-        } catch (error) {
-          alert("通信に失敗しました: " + error);
-        }
+        // loading.html に遷移
+        window.location.href = "loading.html";
       }
     </script>
   </head>
@@ -41,12 +32,11 @@
       <h2 class="text-4xl font-bold mb-8 text-center text-[#a50319]">
         お問い合わせ
       </h2>
+      <!-- action, method は指定しない or "#" にする -->
       <form
         class="space-y-8"
-        action="https://script.google.com/macros/s/AKfycbxmXh3THIvjgJmX0icw2t9rrH9x-6fRxEbK3uXsul3x4my0jdOOLU_nxSlX-amlS9QoiQ/exec"
-        method="POST"
         id="contactForm"
-        onsubmit="sendForm(event)"
+        onsubmit="goToLoading(event)"
       >
         <!-- お名前 -->
         <div>
